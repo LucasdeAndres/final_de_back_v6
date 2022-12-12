@@ -3,6 +3,7 @@ package com.example.clinica_v6.entidades;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,8 @@ import java.util.Collections;
 @Setter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "Users")
 public class User implements UserDetails {
 
     @Id
@@ -34,7 +37,12 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombre;
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
