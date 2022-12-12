@@ -1,7 +1,6 @@
 package com.example.clinica_v6.service;
 
 import com.example.clinica_v6.entidades.User;
-import com.example.clinica_v6.entidades.UserDTO;
 import com.example.clinica_v6.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -28,28 +27,25 @@ public class UserService implements UserDetailsService {
     ObjectMapper mapper;
 
 
-    public User crearUser(UserDTO userDTO) {
+    public User crearUser(User user) {
 
-        User user = mapper.convertValue(userDTO, User.class);
-        repository.save(user);
+        var appUser = new User(null, user.getNombre(),user.getUsername(), user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getRoles());
+        repository.save(appUser);
+
+        return appUser;
+    }
+
+
+    public Optional<User> searchUser(Long id) {
+        Optional<User> user = repository.findById(id);
 
         return user;
-    }
-
-
-    public UserDTO searchUser(Long id) {
-        Optional<User> user = repository.findById(id);
-        UserDTO userDTO = null;
-        if(user.isPresent())
-            userDTO = mapper.convertValue(user,UserDTO.class);
-
-        return userDTO;
 
     }
 
 
-    public void updateUser(UserDTO userDTO) {
-        User user = mapper.convertValue(userDTO, User.class);
+    public void updateUser(User user) {
+
         repository.save(user);
 
     }
@@ -62,16 +58,11 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Set<UserDTO> getTodos() {
+    public List<User> getTodos() {
 
         List<User> users = repository.findAll();
-        Set<UserDTO> usersDTO = new HashSet<>();
 
-        for(User user: users){
-            usersDTO.add(mapper.convertValue(user, UserDTO.class));
-        }
-
-        return usersDTO;
+        return users;
 
     }
 

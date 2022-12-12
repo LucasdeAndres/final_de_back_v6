@@ -23,7 +23,7 @@ public class TurnoController {
         return ResponseEntity.ok().body(service.getTodos());
     }
 
-    @PostMapping("/nubuscarvosTurnos")
+    @PostMapping("/nuevosTurnos")
     public ResponseEntity<Turno> add(@RequestBody TurnoDTO turnoDTO){
         return ResponseEntity.ok().body(service.add(turnoDTO));
     }

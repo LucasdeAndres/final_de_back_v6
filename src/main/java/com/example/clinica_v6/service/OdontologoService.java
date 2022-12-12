@@ -3,6 +3,7 @@ package com.example.clinica_v6.service;
 
 import com.example.clinica_v6.entidades.Odontologo;
 import com.example.clinica_v6.entidades.OdontologoDTO;
+import com.example.clinica_v6.excepciones.ResourceBadRequestException;
 import com.example.clinica_v6.repository.OdontologoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,13 @@ public class OdontologoService implements OdontologoServiceInterface{
     @Override
     public Odontologo crearOdontologo(OdontologoDTO odontologoDTO) {
 
+        if(repository.findByMatricula(odontologoDTO.getMatricula()).isPresent()){
+            try {
+                throw new ResourceBadRequestException("la matricula ya existe");
+            } catch (ResourceBadRequestException e) {
+                throw new RuntimeException(e);
+            }
+        }
         Odontologo odontologo = mapper.convertValue(odontologoDTO, Odontologo.class);
         repository.save(odontologo);
 
@@ -71,4 +79,6 @@ public class OdontologoService implements OdontologoServiceInterface{
         return odontologosDTO;
 
     }
+
+
 }

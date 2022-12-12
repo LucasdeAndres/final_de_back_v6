@@ -2,6 +2,7 @@ package com.example.clinica_v6.service;
 
 import com.example.clinica_v6.entidades.Paciente;
 import com.example.clinica_v6.entidades.PacienteDTO;
+import com.example.clinica_v6.excepciones.ResourceBadRequestException;
 import com.example.clinica_v6.repository.PacienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,13 @@ public class PacienteService implements PacienteServiceInterface{
 
     @Override
     public Paciente add(PacienteDTO pacienteDTO) {
+        if(repository.findByDNI(pacienteDTO.getDni()).isPresent()){
+            try {
+                throw new ResourceBadRequestException("ese DNI ya se encuentra registrado");
+            } catch (ResourceBadRequestException e) {
+                throw new RuntimeException(e);
+            }
+        }
         Paciente paciente = mapper.convertValue(pacienteDTO, Paciente.class);
         repository.save(paciente);
         return paciente;

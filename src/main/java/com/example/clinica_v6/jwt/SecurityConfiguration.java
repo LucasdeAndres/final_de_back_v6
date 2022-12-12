@@ -34,10 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/paciente**","/odontologo**")
+                .antMatchers("/paciente/*","/odontologo/*")
                 .hasAuthority("ADMIN");
         http.authorizeRequests()
-                .antMatchers("/turno**")
+                .antMatchers("/turno/*")
                 .hasAuthority("USER");
         http.authorizeRequests()
                 .antMatchers("/nuevosUsers")

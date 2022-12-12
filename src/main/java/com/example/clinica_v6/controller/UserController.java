@@ -1,6 +1,6 @@
 package com.example.clinica_v6.controller;
 
-import com.example.clinica_v6.entidades.UserDTO;
+import com.example.clinica_v6.entidades.User;
 import com.example.clinica_v6.excepciones.ResourceNotFoundException;
 import com.example.clinica_v6.jwt.JwtUtil;
 import com.example.clinica_v6.security.AuthenticationRequest;
@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -24,19 +25,19 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/buscarTodos")
-    public ResponseEntity<Set<UserDTO>> searchAll (){
+    public ResponseEntity<List<User>> searchAll (){
 
         return ResponseEntity.ok().body(service.getTodos());
     }
 
     @PostMapping("/nuevosUsers")
-    public ResponseEntity<?> add(@RequestBody UserDTO userDTO){
-        return ResponseEntity.ok().body(service.crearUser(userDTO));
+    public ResponseEntity<?> add(@RequestBody User user){
+        return ResponseEntity.ok().body(service.crearUser(user));
     }
 
     @PutMapping("/modificarUser")
-    public void update (@RequestBody UserDTO userDTO){
-        service.updateUser(userDTO);
+    public void update (@RequestBody User user){
+        service.updateUser(user);
     }
 
     @DeleteMapping("/eliminarUser/{id}")
